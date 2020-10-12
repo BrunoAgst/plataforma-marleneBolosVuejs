@@ -1,7 +1,7 @@
 <template>
     <div>
         <Navbar/>
-        <h1>Registrar pedido</h1>
+        <h1>Alterar pedido</h1>
         <form>
             <label id="nomel">Nome: </label><br>
             <input type="text" id="nome" placeholder="Digite o nome do cliente" v-model="nome"/><br>
@@ -9,7 +9,7 @@
             <textarea id="produtos" placeholder="Digite os produtos" v-model="produtos"></textarea><br>
             <label id="valorl" >Valor: </label><br>
             <input type="text" id="valor" placeholder="Digite o valor total do pedido" v-model="valor"/><br>
-            <button id="btregistrar" @click="registrar">Registrar</button>
+            <button id="btalterar" @click="alterar">Alterar Pedido</button>
         </form>
     </div>
 </template>
@@ -17,20 +17,40 @@
 <script>
 import axios from 'axios';
 import Navbar from '../components/Nav';
+
 export default {
+    created(){
+
+        var request = {
+            headers: {
+                Authorization: "Bearer " + localStorage.getItem('token')
+            }
+        }
+
+        axios.get(`${this.url}/v1/pedidos/${this.$route.params.id}`, request).then(res =>{
+            this.id = this.$route.params.id;
+            this.nome = res.data.pedido[0].nome;
+            this.produtos = res.data.pedido[0].produtos;
+            this.valor = res.data.pedido[0].valor;
+            
+        }).catch(err => {
+            console.log(err);
+        });
+    },
     data(){
         return{
+            id: '',
             nome: '',
             produtos: '',
             valor: '',
             url: process.env.VUE_APP_API_URL
         }
     },
-    components:{
+    components: {
         Navbar
     },
-    methods:{
-        registrar(event){
+    methods: {
+        alterar(event){
             event.preventDefault();
             var pedido = {
                 nome: this.nome,
@@ -39,15 +59,15 @@ export default {
             };
 
             var request = {
-            headers: {
+                headers: {
                     Authorization: "Bearer " + localStorage.getItem('token')
                 }
             }
 
-            axios.post(`${this.url}/v1/pedidos`, pedido, request).then(() => {
-                alert('Pedido cadastrado com sucesso');
+            axios.put(`${this.url}/v1/pedidos/${this.id}`, pedido, request).then(() => {
+                alert('Pedido alterado com sucesso');
                 this.$router.push({ name: "Pedidos"});
-        
+
             }).catch(err => {
                 console.log(err);
                 alert('Erro, campos inválidos verifique novamente');
@@ -78,7 +98,7 @@ export default {
         padding-bottom: 50px;
         margin-bottom: 10px;
     }
-    #btregistrar{
+    #btalterar{
         width: 150px;
         height: 30px;
         background: lightseagreen;
@@ -86,6 +106,6 @@ export default {
         border: 0;
         border-radius: 4px;
         cursor: pointer;
+        border-radius: 4px;
     }
-
 </style>

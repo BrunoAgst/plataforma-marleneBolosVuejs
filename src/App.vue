@@ -1,10 +1,5 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Inicio</router-link>
-      <router-link to="/pedidos">Pedidos</router-link>
-      <router-link to="/registrar">Registrar</router-link>
-    </div>
     <router-view/>
   </div>
 </template>
@@ -18,20 +13,4 @@
   color: #2c3e50;
 }
 
-#nav {
-  padding: 30px;
-  
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-  margin-right: 10px;
-  text-decoration: none;
-
-}
-
-#nav a.router-link-exact-active {
-  color:lightseagreen;
-}
 </style>

@@ -20,9 +20,8 @@ export default {
                 Authorization: "Bearer " + localStorage.getItem('token')
             }
         }  
-
-        axios.get(`${this.url}/v1/pedidos`, request).then(res => {
-                this.dados = res.data.pedidos;
+        axios.get(`${this.url}/v1/total-mensal`, request).then(res => {
+                this.dados = res.data.listaValores;
                 this.valorTotal(this.dados);
                 this.pegarMes();
                 
@@ -45,7 +44,7 @@ export default {
     methods:{
         valorTotal(array){
             for(var i = 0; i < array.length; i++){
-                this.valor += array[i].valor
+                this.valor += array[i]
             }
         },
         pegarMes(){

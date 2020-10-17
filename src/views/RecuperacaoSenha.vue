@@ -39,7 +39,7 @@ export default {
                 "token": this.token
             }
 
-            axios.post(`${this.url}/nova-senha`, usuario).then(() => {
+            axios.post(`${this.url}/v1/nova-senha`, usuario).then(() => {
                 alert('Senha alterada com sucesso');
                 this.$router.push('Login');
 

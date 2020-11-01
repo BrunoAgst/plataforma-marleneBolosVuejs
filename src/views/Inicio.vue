@@ -20,12 +20,12 @@ import axios from 'axios';
 export default { 
     created(){
 
-        var request = {
+        this.request = {
             headers: {
                 Authorization: "Bearer " + localStorage.getItem('token')
             }
         }  
-        axios.get(`${this.url}/v1/total-mensal`, request).then(res => {
+        axios.get(`${this.url}/v1/total-mensal`, this.request).then(res => {
                 this.dados = res.data.listaValores;
                 this.valorTotal(this.dados);
                 this.pegarMes();
@@ -94,6 +94,7 @@ export default {
             mes: '',
             mesF: '',
             url: process.env.VUE_APP_API_URL,
+            request: ''
         }
     },
     components: {
@@ -144,7 +145,7 @@ export default {
                     numero = 11;
             }
         
-            axios.get(`${this.url}/v1/pedidos-mensal/${numero}/${data.getFullYear()}`).then(res => {
+            axios.get(`${this.url}/v1/pedidos-mensal/${numero}/${data.getFullYear()}`, this.request).then(res => {
                 for(var i = 0; i < res.data.length; i++){
                     valor += res.data[i]
                 }
@@ -153,7 +154,7 @@ export default {
                 
             }).catch(err => {
                 console.log(err);
-        });
+            });
         },
         valorTotal(array){
             for(var i = 0; i < array.length; i++){
